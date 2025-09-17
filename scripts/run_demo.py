@@ -2,7 +2,6 @@
 import json, os, sys, hashlib, platform, datetime
 from pathlib import Path
 
-# local import
 sys.path.append(str(Path(__file__).resolve().parents[1] / "metrics"))
 from lsc_pb import lsc_pb_score
 
@@ -17,6 +16,14 @@ def sha256(path: Path) -> str:
         for chunk in iter(lambda: f.read(8192), b""):
             h.update(chunk)
     return h.hexdigest()
+
+def git_commit_short() -> str:
+    try:
+        import subprocess
+        out = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], cwd=str(ROOT))
+        return out.decode().strip()
+    except Exception:
+        return "N/A"
 
 def main():
     with open(DATA, "r", encoding="utf-8") as f:
@@ -39,9 +46,10 @@ def main():
         "env": {
             "python": sys.version.split()[0],
             "platform": platform.platform(),
+            "commit": git_commit_short(),
         },
         "provenance": {
-            "data_file": str(DATA.name),
+            "data_file": DATA.name,
             "timestamp_utc": datetime.datetime.utcnow().isoformat() + "Z",
             "repo_hint": "CAP × Deleuze × Diff-Geo × Pullback"
         }
