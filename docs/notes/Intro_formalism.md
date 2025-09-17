@@ -1,4 +1,3 @@
-把標題格式統一一下：
 # From Difference to Decision: A Compact Framework for Context Alignment
 
 **Subtitle:** Unifying philosophical distinctions, semantic invariants, and category-theoretic checks into a public, auditable workflow.
